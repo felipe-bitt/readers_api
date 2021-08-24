@@ -1,23 +1,23 @@
 require "test_helper"
 
-class UserControllerTest < ActionDispatch::IntegrationTest
+class Api::V1::UsersControllerTest < ActionDispatch::IntegrationTest
   test "should get create" do
-    get user_create_url
+    get users_create_url
     assert_response :success
   end
 
   test "should get show" do
-    get user_show_url
+    get users_show_url
     assert_response :success
   end
 
   test "should get update" do
-    get user_update_url
+    get users_update_url
     assert_response :success
   end
 
   test "should get delete" do
-    get user_delete_url
+    get users_delete_url
     assert_response :success
   end
 end

@@ -42,12 +42,12 @@ class Api::V1::BooksController < Api::V1::ApiController
     end
 
     # Only allow a list of trusted parameters through.
-    def user_params
+    def book_params
       params.require(:book).permit(:name, :author, :genre, :rating, :feedback)
     end
 
     def require_authorization!
-      unless current_user == @contact.user
+      unless current_user == @current_user
         render json: {}, status: :forbidden
       end
     end

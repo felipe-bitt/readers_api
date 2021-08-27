@@ -1,16 +1,16 @@
 class Api::V1::BooksController < Api::V1::ApiController
 
-  before_action :require_authorization!, only: [:show, :update, :destroy]
-
+  before_action :set_book, only: [ :show, :update, :destroy]
+  before_action :authorize_request
 
   # GET /api
   def index
-    @books = Book.all
+    @books = current_user.books
     render json: @books
   end
 
   def create
-    @book = Book.new(book_params.merge(user: current_user))
+    @book = current_user.books.build(book_params)
 
     if @book.save
       render json: @book, status: :created
@@ -20,7 +20,7 @@ class Api::V1::BooksController < Api::V1::ApiController
   end
 
   def show
-    render json: @books
+    render json: @book
   end
 
   def update
@@ -43,13 +43,7 @@ class Api::V1::BooksController < Api::V1::ApiController
 
     # Only allow a list of trusted parameters through.
     def book_params
-      params.require(:book).permit(:name, :author, :genre, :rating, :feedback)
-    end
-
-    def require_authorization!
-      unless current_user == @current_user
-        render json: {}, status: :forbidden
-      end
+      params.require(:book).permit(:name, :author, :genre, :rating, :feedback, :user_id)
     end
 
 end
